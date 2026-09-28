@@ -80,6 +80,48 @@ Upload the contents of `dist/` to any static hosting service (Netlify, GitHub Pa
 
 Launch the app and click **Try Demo Scenario** to run "The Overconnected Developer" — a seeded scenario that demonstrates the full simulation including circular dependency detection, without entering any personal data.
 
+## Built with IBM Bob
+
+BLACKOUT was built entirely within a single hackathon session using **IBM Bob** — IBM's AI software development assistant — as the primary engineering tool. No code was written by hand.
+
+### How Bob was used
+
+**1. Product specification → working code in one pass**
+
+The entire product was specified in a single detailed prompt — product concept, screen flow, simulation logic, visual direction, accessibility requirements, test cases and deployment config. Bob read the full spec and produced every file: types, data models, simulation engine, all React components, CSS, tests, `vercel.json` and README. The project went from an empty repository to a passing build without any manual coding.
+
+**2. Simulation engine design**
+
+Bob designed and implemented the deterministic dependency graph engine in [`src/lib/simulation.ts`](src/lib/simulation.ts). This includes:
+- directed graph traversal to propagate failures when the phone node is removed
+- DFS-based cycle detection to surface circular recovery dependencies
+- explainable failure reasons for every capability — no invented scores or percentages
+
+**3. Test-driven correctness**
+
+Bob wrote six test groups in [`src/tests/simulation.test.ts`](src/tests/simulation.test.ts) covering phone removal, independent fallback survival, uncertain states, circular dependency detection, fix application and demo mode outcome verification. All 14 tests pass. When the initial build failed due to a TypeScript type error in the test file, Bob diagnosed and fixed it immediately without being asked.
+
+**4. Iterative fixes without stopping**
+
+When `npm run build` produced a TypeScript error, Bob caught it in the build output, applied the fix, and reran the build — all in the same session, autonomously.
+
+**5. Git and deployment**
+
+Bob initialised the repository, staged all files, wrote the commit message, pushed to `main` on GitHub, checked for Vercel CLI authentication, and provided the exact manual deployment step when CLI auth was unavailable.
+
+### What Bob did not do
+
+Bob did not invent features beyond the spec. It did not add unnecessary dependencies, abstractions or boilerplate. Every file it produced traces directly to a requirement in the original brief — a core principle it was instructed to follow.
+
+### Bob modes used
+
+| Mode | Purpose |
+|------|---------|
+| **Plan** | Initial session — read the spec, asked zero clarifying questions, produced the full plan |
+| **Agent** | Implementation — wrote all files, ran `npm install`, `npm test`, `npm run build`, fixed errors, committed and pushed |
+
+---
+
 ## Built for
 
 **IBM Malaysia Build with Bob + Mini Bob-a-thon with Developer Kaki**
